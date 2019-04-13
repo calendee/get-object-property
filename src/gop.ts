@@ -3,7 +3,6 @@ export const getObjectProperty = (
   path: string,
   defaultValue?: any,
 ): any => {
-  let newObj = {};
   const defaultReturn =
     typeof defaultValue !== "undefined" ? defaultValue : undefined;
 
@@ -12,13 +11,17 @@ export const getObjectProperty = (
   }
 
   const paths = path.split(".");
-  const [property] = paths;
+  const [currentProperty] = paths;
 
   if (paths.length === 1) {
-    return obj.hasOwnProperty(property) ? obj[property] : defaultReturn;
+    return obj.hasOwnProperty(currentProperty)
+      ? obj[currentProperty]
+      : defaultReturn;
   }
 
   paths.shift();
-  newObj = obj.hasOwnProperty(property) ? obj[property] : {};
+  const newObj = obj.hasOwnProperty(currentProperty)
+    ? obj[currentProperty]
+    : undefined;
   return getObjectProperty(newObj, paths.join("."), defaultReturn);
 };
